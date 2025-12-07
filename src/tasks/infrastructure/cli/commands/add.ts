@@ -12,8 +12,7 @@ export const addCommand = (repository: ITaskRepository) => {
         await AddTaskUseCase(repository, task);
         console.log(`Task "${task}" added successfully`);
       } catch (error) {
-        console.error('Error adding task:', error);
-        process.exit(1);
+        throw error
       }
     });
 };

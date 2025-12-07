@@ -18,15 +18,12 @@ export const updateCommand = (repository: ITaskRepository) => {
       try {
         const taskStatus = status as TaskStatus;
         if (!Object.values(TaskStatus).includes(taskStatus)) {
-          console.error(`Invalid status. Valid values: ${Object.values(TaskStatus).join(', ')}`);
-          process.exit(1);
-          return;
+          throw new Error(`Invalid status. Valid values: ${Object.values(TaskStatus).join(', ')}`);
         }
         await ChangeTaskStatusUseCase(repository, taskId, taskStatus);
         console.log(`Task status updated successfully`);
       } catch (error) {
-        console.error('Error updating task status:', error);
-        process.exit(1);
+        throw new Error('Error updating task status');
       }
     });
 
@@ -40,8 +37,7 @@ export const updateCommand = (repository: ITaskRepository) => {
         await UpdateTaskUseCase(repository, taskId, { title });
         console.log(`Task title updated successfully`);
       } catch (error) {
-        console.error('Error updating task title:', error);
-        process.exit(1);
+        throw error
       }
     });
 

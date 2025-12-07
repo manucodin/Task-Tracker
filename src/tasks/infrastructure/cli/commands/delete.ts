@@ -12,8 +12,7 @@ export const deleteCommand = (repository: ITaskRepository) => {
         await DeleteTaskUseCase(repository, taskId);
         console.log(`Task with ID "${taskId}" deleted successfully`);
       } catch (error) {
-        console.error('Error deleting task:', error);
-        process.exit(1);
+        throw error
       }
     });
 };

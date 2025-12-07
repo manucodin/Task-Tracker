@@ -18,8 +18,7 @@ export const listCommand = (repository: ITaskRepository) => {
           console.log(`  [${task.status}] ${task.title} (ID: ${task.id})`);
         });
       } catch (error) {
-        console.error('Error listing tasks:', error);
-        process.exit(1);
+        throw error
       }
     });
 };
