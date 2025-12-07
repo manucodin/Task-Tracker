@@ -90,6 +90,192 @@ describe('JsonTaskRepository', () => {
       expect(result[0].id).toBe('2');
       expect(result[1].id).toBe('1');
     });
+
+    it('should return only tasks with TODO status', async () => {
+      const tasks = [
+        {
+          id: '1',
+          title: 'Todo task 1',
+          status: TaskStatus.TODO,
+          createdAt: new Date('2024-01-01'),
+          updatedAt: new Date('2024-01-01'),
+        },
+        {
+          id: '2',
+          title: 'Done task',
+          status: TaskStatus.DONE,
+          createdAt: new Date('2024-01-02'),
+          updatedAt: new Date('2024-01-02'),
+        },
+        {
+          id: '3',
+          title: 'Todo task 2',
+          status: TaskStatus.TODO,
+          createdAt: new Date('2024-01-03'),
+          updatedAt: new Date('2024-01-03'),
+        },
+        {
+          id: '4',
+          title: 'In progress task',
+          status: TaskStatus.IN_PROGRESS,
+          createdAt: new Date('2024-01-04'),
+          updatedAt: new Date('2024-01-04'),
+        },
+      ];
+
+      readTasks.mockResolvedValue(tasks);
+
+      const result = await repository.findAll(TaskStatus.TODO);
+
+      expect(result).toHaveLength(2);
+      expect(result.every(task => task.status === TaskStatus.TODO)).toBe(true);
+      expect(result[0].id).toBe('3');
+      expect(result[1].id).toBe('1');
+    });
+
+    it('should return only tasks with DONE status', async () => {
+      const tasks = [
+        {
+          id: '1',
+          title: 'Todo task',
+          status: TaskStatus.TODO,
+          createdAt: new Date('2024-01-01'),
+          updatedAt: new Date('2024-01-01'),
+        },
+        {
+          id: '2',
+          title: 'Done task 1',
+          status: TaskStatus.DONE,
+          createdAt: new Date('2024-01-02'),
+          updatedAt: new Date('2024-01-02'),
+        },
+        {
+          id: '3',
+          title: 'Done task 2',
+          status: TaskStatus.DONE,
+          createdAt: new Date('2024-01-03'),
+          updatedAt: new Date('2024-01-03'),
+        },
+        {
+          id: '4',
+          title: 'In progress task',
+          status: TaskStatus.IN_PROGRESS,
+          createdAt: new Date('2024-01-04'),
+          updatedAt: new Date('2024-01-04'),
+        },
+      ];
+
+      readTasks.mockResolvedValue(tasks);
+
+      const result = await repository.findAll(TaskStatus.DONE);
+
+      expect(result).toHaveLength(2);
+      expect(result.every(task => task.status === TaskStatus.DONE)).toBe(true);
+      expect(result[0].id).toBe('3');
+      expect(result[1].id).toBe('2');
+    });
+
+    it('should return only tasks with IN_PROGRESS status', async () => {
+      const tasks = [
+        {
+          id: '1',
+          title: 'Todo task',
+          status: TaskStatus.TODO,
+          createdAt: new Date('2024-01-01'),
+          updatedAt: new Date('2024-01-01'),
+        },
+        {
+          id: '2',
+          title: 'Done task',
+          status: TaskStatus.DONE,
+          createdAt: new Date('2024-01-02'),
+          updatedAt: new Date('2024-01-02'),
+        },
+        {
+          id: '3',
+          title: 'In progress task 1',
+          status: TaskStatus.IN_PROGRESS,
+          createdAt: new Date('2024-01-03'),
+          updatedAt: new Date('2024-01-03'),
+        },
+        {
+          id: '4',
+          title: 'In progress task 2',
+          status: TaskStatus.IN_PROGRESS,
+          createdAt: new Date('2024-01-04'),
+          updatedAt: new Date('2024-01-04'),
+        },
+      ];
+
+      readTasks.mockResolvedValue(tasks);
+
+      const result = await repository.findAll(TaskStatus.IN_PROGRESS);
+
+      expect(result).toHaveLength(2);
+      expect(result.every(task => task.status === TaskStatus.IN_PROGRESS)).toBe(true);
+      expect(result[0].id).toBe('4');
+      expect(result[1].id).toBe('3');
+    });
+
+    it('should return empty array when no tasks match the status', async () => {
+      const tasks = [
+        {
+          id: '1',
+          title: 'Todo task',
+          status: TaskStatus.TODO,
+          createdAt: new Date('2024-01-01'),
+          updatedAt: new Date('2024-01-01'),
+        },
+        {
+          id: '2',
+          title: 'Done task',
+          status: TaskStatus.DONE,
+          createdAt: new Date('2024-01-02'),
+          updatedAt: new Date('2024-01-02'),
+        },
+      ];
+
+      readTasks.mockResolvedValue(tasks);
+
+      const result = await repository.findAll(TaskStatus.IN_PROGRESS);
+
+      expect(result).toHaveLength(0);
+    });
+
+    it('should maintain createdAt descending order when filtering by status', async () => {
+      const tasks = [
+        {
+          id: '1',
+          title: 'Old todo task',
+          status: TaskStatus.TODO,
+          createdAt: new Date('2024-01-01'),
+          updatedAt: new Date('2024-01-01'),
+        },
+        {
+          id: '2',
+          title: 'New todo task',
+          status: TaskStatus.TODO,
+          createdAt: new Date('2024-01-03'),
+          updatedAt: new Date('2024-01-03'),
+        },
+        {
+          id: '3',
+          title: 'Middle todo task',
+          status: TaskStatus.TODO,
+          createdAt: new Date('2024-01-02'),
+          updatedAt: new Date('2024-01-02'),
+        },
+      ];
+
+      readTasks.mockResolvedValue(tasks);
+
+      const result = await repository.findAll(TaskStatus.TODO);
+
+      expect(result).toHaveLength(3);
+      expect(result[0].id).toBe('2');
+      expect(result[1].id).toBe('3');
+      expect(result[2].id).toBe('1');
+    });
   });
 
   describe('findById', () => {
