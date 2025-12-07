@@ -2,6 +2,8 @@
 
 Small CLI to manage to‑do tasks from the terminal, written in TypeScript.
 
+> This project is based on the [Task Tracker CLI project](https://roadmap.sh/projects/task-tracker) from [roadmap.sh](https://roadmap.sh).
+
 ### Requirements
 - **Node.js** >= 18
 - **npm**
