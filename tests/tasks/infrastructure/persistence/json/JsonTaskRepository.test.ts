@@ -24,13 +24,13 @@ describe('JsonTaskRepository', () => {
 
       const newTask = await repository.create({
         title: 'Test task',
-        status: TaskStatus.PENDING,
+        status: TaskStatus.TODO,
       });
 
       expect(newTask).toHaveProperty('id');
       expect(newTask.id).toBeTruthy();
       expect(newTask.title).toBe('Test task');
-      expect(newTask.status).toBe(TaskStatus.PENDING);
+      expect(newTask.status).toBe(TaskStatus.TODO);
       expect(newTask.createdAt).toBeInstanceOf(Date);
       expect(newTask.updatedAt).toBeInstanceOf(Date);
       expect(newTask.createdAt.getTime()).toBe(newTask.updatedAt.getTime());
@@ -42,7 +42,7 @@ describe('JsonTaskRepository', () => {
         {
           id: '1',
           title: 'Existing task',
-          status: TaskStatus.PENDING,
+          status: TaskStatus.TODO,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -51,7 +51,7 @@ describe('JsonTaskRepository', () => {
 
       const newTask = await repository.create({
         title: 'New task',
-        status: TaskStatus.PENDING,
+        status: TaskStatus.TODO,
       });
 
       expect(writeTasks).toHaveBeenCalledWith(
@@ -69,14 +69,14 @@ describe('JsonTaskRepository', () => {
         {
           id: '1',
           title: 'First task',
-          status: TaskStatus.PENDING,
+          status: TaskStatus.TODO,
           createdAt: new Date('2024-01-01'),
           updatedAt: new Date('2024-01-01'),
         },
         {
           id: '2',
           title: 'Second task',
-          status: TaskStatus.COMPLETED,
+          status: TaskStatus.DONE,
           createdAt: new Date('2024-01-02'),
           updatedAt: new Date('2024-01-02'),
         },
@@ -98,7 +98,7 @@ describe('JsonTaskRepository', () => {
         {
           id: '1',
           title: 'Test task',
-          status: TaskStatus.PENDING,
+          status: TaskStatus.TODO,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -129,7 +129,7 @@ describe('JsonTaskRepository', () => {
         {
           id: '1',
           title: 'Original title',
-          status: TaskStatus.PENDING,
+          status: TaskStatus.TODO,
           createdAt: originalDate,
           updatedAt: originalDate,
         },
@@ -141,7 +141,7 @@ describe('JsonTaskRepository', () => {
 
       expect(result).not.toBeNull();
       expect(result?.title).toBe('Updated title');
-      expect(result?.status).toBe(TaskStatus.PENDING);
+      expect(result?.status).toBe(TaskStatus.TODO);
       expect(result?.updatedAt.getTime()).toBeGreaterThanOrEqual(originalDate.getTime());
       expect(writeTasks).toHaveBeenCalledTimes(1);
     });
@@ -151,7 +151,7 @@ describe('JsonTaskRepository', () => {
         {
           id: '1',
           title: 'Test task',
-          status: TaskStatus.PENDING,
+          status: TaskStatus.TODO,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -159,10 +159,10 @@ describe('JsonTaskRepository', () => {
 
       readTasks.mockResolvedValue(tasks);
 
-      const result = await repository.update('1', { status: TaskStatus.COMPLETED });
+      const result = await repository.update('1', { status: TaskStatus.DONE });
 
       expect(result).not.toBeNull();
-      expect(result?.status).toBe(TaskStatus.COMPLETED);
+      expect(result?.status).toBe(TaskStatus.DONE);
       expect(result?.title).toBe('Test task');
       expect(writeTasks).toHaveBeenCalledTimes(1);
     });
@@ -172,7 +172,7 @@ describe('JsonTaskRepository', () => {
         {
           id: '1',
           title: 'Original title',
-          status: TaskStatus.PENDING,
+          status: TaskStatus.TODO,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -207,7 +207,7 @@ describe('JsonTaskRepository', () => {
         {
           id: '1',
           title: 'Test task',
-          status: TaskStatus.PENDING,
+          status: TaskStatus.TODO,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -215,10 +215,10 @@ describe('JsonTaskRepository', () => {
 
       readTasks.mockResolvedValue(tasks);
 
-      const result = await repository.updateStatus('1', TaskStatus.COMPLETED);
+      const result = await repository.updateStatus('1', TaskStatus.DONE);
 
       expect(result).not.toBeNull();
-      expect(result?.status).toBe(TaskStatus.COMPLETED);
+      expect(result?.status).toBe(TaskStatus.DONE);
       expect(result?.title).toBe('Test task');
       expect(writeTasks).toHaveBeenCalledTimes(1);
     });
@@ -226,7 +226,7 @@ describe('JsonTaskRepository', () => {
     it('should return null if task not found', async () => {
       readTasks.mockResolvedValue([]);
 
-      const result = await repository.updateStatus('non-existent', TaskStatus.COMPLETED);
+      const result = await repository.updateStatus('non-existent', TaskStatus.DONE);
 
       expect(result).toBeNull();
       expect(writeTasks).not.toHaveBeenCalled();
@@ -239,7 +239,7 @@ describe('JsonTaskRepository', () => {
         {
           id: '1',
           title: 'Test task',
-          status: TaskStatus.PENDING,
+          status: TaskStatus.TODO,
           createdAt: new Date(),
           updatedAt: new Date(),
         },

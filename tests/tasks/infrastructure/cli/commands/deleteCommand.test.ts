@@ -22,7 +22,7 @@ describe('deleteCommand', () => {
   it('should delete a task and display success message', async () => {
     const task = await repository.create({
       title: 'Task to delete',
-      status: TaskStatus.PENDING,
+      status: TaskStatus.TODO,
     });
 
     await program.parseAsync(['node', 'test', 'delete', task.id]);

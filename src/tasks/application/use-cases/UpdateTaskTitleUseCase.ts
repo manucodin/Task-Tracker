@@ -1,10 +1,9 @@
 import { ITaskRepository } from '../../infrastructure/persistence/TaskRepository.interface';
-import { TaskStatus } from '../../domain/Task.interface';
 
-export const UpdateTaskUseCase = async (
+export const UpdateTaskTitleUseCase = async (
   repository: ITaskRepository,
   taskId: string,
-  updates: { title?: string; status?: TaskStatus }
+  updates: { title?: string }
 ): Promise<void> => {
   const task = await repository.update(taskId, updates);
   if (!task) {

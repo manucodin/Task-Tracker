@@ -26,7 +26,7 @@ describe('addCommand', () => {
     const tasks = repository.getTasks();
     expect(tasks).toHaveLength(1);
     expect(tasks[0].title).toBe(taskTitle);
-    expect(consoleLogSpy).toHaveBeenCalledWith(`Task "${taskTitle}" added successfully`);
+    expect(consoleLogSpy).toHaveBeenCalledWith(expect.stringMatching(/Task added successfully \(ID: .+\)/));
   });
 
   it('should propagate errors', async () => {

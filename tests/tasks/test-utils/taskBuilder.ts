@@ -6,7 +6,7 @@ export const createTask = (overrides?: Partial<Task>): Task => {
   return {
     id: randomUUID(),
     title: 'Test Task',
-    status: TaskStatus.PENDING,
+    status: TaskStatus.TODO,
     createdAt: now,
     updatedAt: now,
     ...overrides,

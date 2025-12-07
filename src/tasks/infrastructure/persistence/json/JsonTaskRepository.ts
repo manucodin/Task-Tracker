@@ -22,10 +22,22 @@ export class JsonTaskRepository implements ITaskRepository {
     return newTask;
   }
 
-  async findAll(): Promise<Task[]> {
+  async findAll(status?: TaskStatus): Promise<Task[]> {
     const tasks = await readTasks();
-    // Sort by createdAt descending (newest first) to match MongoDB behavior
-    return tasks.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+
+    if (!status) {
+      return tasks.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+    }
+
+    // Convert enum to its string value for comparison
+    const statusValue = status;
+    return tasks
+      .filter((task) => {
+        const taskStatusStr = String(task.status);
+        const filterStatusStr = String(statusValue);
+        return taskStatusStr === filterStatusStr;
+      })
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   }
 
   async findById(id: string): Promise<Task | null> {

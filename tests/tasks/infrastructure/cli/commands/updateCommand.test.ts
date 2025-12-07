@@ -19,70 +19,29 @@ describe('updateCommand', () => {
     consoleLogSpy.mockRestore();
   });
 
-  describe('status subcommand', () => {
-    it('should update task status with valid status', async () => {
-      const task = await repository.create({
-        title: 'Test task',
-        status: TaskStatus.PENDING,
-      });
-
-      await program.parseAsync(['node', 'test', 'update', 'status', task.id, TaskStatus.COMPLETED]);
-
-      const updatedTask = await repository.findById(task.id);
-      expect(updatedTask?.status).toBe(TaskStatus.COMPLETED);
-      expect(consoleLogSpy).toHaveBeenCalledWith('Task status updated successfully');
+  it('should update task title', async () => {
+    const task = await repository.create({
+      title: 'Original title',
+      status: TaskStatus.TODO,
     });
 
-    it('should throw error with invalid status', async () => {
-      const task = await repository.create({
-        title: 'Test task',
-        status: TaskStatus.PENDING,
-      });
+    await program.parseAsync(['node', 'test', 'update', task.id, 'New title']);
 
-      await expect(
-        program.parseAsync(['node', 'test', 'update', 'status', task.id, 'invalid_status'])
-      ).rejects.toThrow('Error updating task status');
-    });
-
-    it('should propagate errors', async () => {
-      const mockRepository = {
-        updateStatus: jest.fn().mockRejectedValue(new Error('Repository error')),
-      } as any;
-
-      const errorProgram = new Command();
-      errorProgram.addCommand(updateCommand(mockRepository));
-      
-      await expect(
-        errorProgram.parseAsync(['node', 'test', 'update', 'status', 'task-id', TaskStatus.COMPLETED])
-      ).rejects.toThrow('Error updating task status');
-    });
+    const updatedTask = await repository.findById(task.id);
+    expect(updatedTask?.title).toBe('New title');
+    expect(consoleLogSpy).toHaveBeenCalledWith('Task title updated successfully');
   });
 
-  describe('title subcommand', () => {
-    it('should update task title', async () => {
-      const task = await repository.create({
-        title: 'Original title',
-        status: TaskStatus.PENDING,
-      });
+  it('should propagate errors', async () => {
+    const mockRepository = {
+      update: jest.fn().mockRejectedValue(new Error('Repository error')),
+    } as any;
 
-      await program.parseAsync(['node', 'test', 'update', 'title', task.id, 'New title']);
-
-      const updatedTask = await repository.findById(task.id);
-      expect(updatedTask?.title).toBe('New title');
-      expect(consoleLogSpy).toHaveBeenCalledWith('Task title updated successfully');
-    });
-
-    it('should propagate errors', async () => {
-      const mockRepository = {
-        update: jest.fn().mockRejectedValue(new Error('Repository error')),
-      } as any;
-
-      const errorProgram = new Command();
-      errorProgram.addCommand(updateCommand(mockRepository));
-      
-      await expect(
-        errorProgram.parseAsync(['node', 'test', 'update', 'title', 'task-id', 'New title'])
-      ).rejects.toThrow('Repository error');
-    });
+    const errorProgram = new Command();
+    errorProgram.addCommand(updateCommand(mockRepository));
+    
+    await expect(
+      errorProgram.parseAsync(['node', 'test', 'update', 'task-id', 'New title'])
+    ).rejects.toThrow('Repository error');
   });
 });

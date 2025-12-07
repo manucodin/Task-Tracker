@@ -10,17 +10,17 @@ describe('ChangeTaskStatusUseCase', () => {
     repository = new InMemoryTaskRepository();
     const task = await repository.create({
       title: 'Test task',
-      status: TaskStatus.PENDING,
+      status: TaskStatus.TODO,
     });
     taskId = task.id;
   });
 
   it('should change task status to COMPLETED', async () => {
-    await ChangeTaskStatusUseCase(repository, taskId, TaskStatus.COMPLETED);
+    await ChangeTaskStatusUseCase(repository, taskId, TaskStatus.DONE);
 
     const updatedTask = await repository.findById(taskId);
     expect(updatedTask).not.toBeNull();
-    expect(updatedTask?.status).toBe(TaskStatus.COMPLETED);
+    expect(updatedTask?.status).toBe(TaskStatus.DONE);
   });
 
   it('should change task status to IN_PROGRESS', async () => {
@@ -32,18 +32,18 @@ describe('ChangeTaskStatusUseCase', () => {
   });
 
   it('should change task status to CANCELLED', async () => {
-    await ChangeTaskStatusUseCase(repository, taskId, TaskStatus.CANCELLED);
+    await ChangeTaskStatusUseCase(repository, taskId, TaskStatus.DONE);
 
     const updatedTask = await repository.findById(taskId);
     expect(updatedTask).not.toBeNull();
-    expect(updatedTask?.status).toBe(TaskStatus.CANCELLED);
+    expect(updatedTask?.status).toBe(TaskStatus.DONE);
   });
 
   it('should throw error when task does not exist', async () => {
     const nonExistentId = 'non-existent-id';
 
     await expect(
-      ChangeTaskStatusUseCase(repository, nonExistentId, TaskStatus.COMPLETED)
+      ChangeTaskStatusUseCase(repository, nonExistentId, TaskStatus.DONE)
     ).rejects.toThrow(`Task with id ${nonExistentId} not found`);
   });
 });

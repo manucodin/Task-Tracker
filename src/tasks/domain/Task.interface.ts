@@ -7,9 +7,8 @@ export interface Task {
 }
 
 export enum TaskStatus {
-  PENDING = 'pending',
-  COMPLETED = 'completed',
-  IN_PROGRESS = 'in_progress',
-  CANCELLED = 'cancelled',
+  TODO = 'todo',
+  DONE = 'done',
+  IN_PROGRESS = 'in-progress'
 }
 

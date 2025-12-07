@@ -29,11 +29,11 @@ describe('listCommand', () => {
   it('should display all tasks with correct format', async () => {
     const task1 = await repository.create({
       title: 'Task 1',
-      status: TaskStatus.PENDING,
+      status: TaskStatus.TODO,
     });
     const task2 = await repository.create({
       title: 'Task 2',
-      status: TaskStatus.COMPLETED,
+      status: TaskStatus.DONE,
     });
 
     await program.parseAsync(['node', 'test', 'list']);

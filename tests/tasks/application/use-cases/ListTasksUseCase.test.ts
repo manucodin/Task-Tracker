@@ -16,12 +16,12 @@ describe('ListTasksUseCase', () => {
   });
 
   it('should return all tasks sorted by createdAt descending', async () => {
-    await repository.create({ title: 'Task 1', status: TaskStatus.PENDING });
+    await repository.create({ title: 'Task 1', status: TaskStatus.TODO });
     // Small delay to ensure different timestamps
     await new Promise(resolve => setTimeout(resolve, 10));
-    await repository.create({ title: 'Task 2', status: TaskStatus.PENDING });
+    await repository.create({ title: 'Task 2', status: TaskStatus.TODO });
     await new Promise(resolve => setTimeout(resolve, 10));
-    await repository.create({ title: 'Task 3', status: TaskStatus.PENDING });
+    await repository.create({ title: 'Task 3', status: TaskStatus.TODO });
 
     const tasks = await ListTasksUseCase(repository);
 
@@ -32,15 +32,15 @@ describe('ListTasksUseCase', () => {
   });
 
   it('should return tasks with different statuses', async () => {
-    await repository.create({ title: 'Pending task', status: TaskStatus.PENDING });
-    await repository.create({ title: 'Completed task', status: TaskStatus.COMPLETED });
+    await repository.create({ title: 'Pending task', status: TaskStatus.TODO });
+    await repository.create({ title: 'Completed task', status: TaskStatus.DONE });
     await repository.create({ title: 'In progress task', status: TaskStatus.IN_PROGRESS });
 
     const tasks = await ListTasksUseCase(repository);
 
     expect(tasks).toHaveLength(3);
-    expect(tasks.some((t) => t.status === TaskStatus.PENDING)).toBe(true);
-    expect(tasks.some((t) => t.status === TaskStatus.COMPLETED)).toBe(true);
+    expect(tasks.some((t) => t.status === TaskStatus.TODO)).toBe(true);
+    expect(tasks.some((t) => t.status === TaskStatus.DONE)).toBe(true);
     expect(tasks.some((t) => t.status === TaskStatus.IN_PROGRESS)).toBe(true);
   });
 });

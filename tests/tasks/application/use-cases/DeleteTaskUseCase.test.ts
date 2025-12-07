@@ -10,7 +10,7 @@ describe('DeleteTaskUseCase', () => {
     repository = new InMemoryTaskRepository();
     const task = await repository.create({
       title: 'Task to delete',
-      status: TaskStatus.PENDING,
+      status: TaskStatus.TODO,
     });
     taskId = task.id;
   });
@@ -34,11 +34,11 @@ describe('DeleteTaskUseCase', () => {
   it('should delete correct task when multiple tasks exist', async () => {
     const task2 = await repository.create({
       title: 'Task 2',
-      status: TaskStatus.PENDING,
+      status: TaskStatus.TODO,
     });
     const task3 = await repository.create({
       title: 'Task 3',
-      status: TaskStatus.PENDING,
+      status: TaskStatus.TODO,
     });
 
     await DeleteTaskUseCase(repository, task2.id);

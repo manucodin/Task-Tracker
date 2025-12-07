@@ -49,16 +49,12 @@ describe('App', () => {
       expect(listCommand).toBeDefined();
     });
 
-    it('should register update subcommands', () => {
+    it('should register update command', () => {
       const repository = new InMemoryTaskRepository();
       const program = createProgram(repository);
 
       const updateCommand = program.commands.find((cmd: Command) => cmd.name() === 'update');
       expect(updateCommand).toBeDefined();
-      
-      const updateSubcommands = updateCommand?.commands.map((cmd: Command) => cmd.name()) || [];
-      expect(updateSubcommands).toContain('status');
-      expect(updateSubcommands).toContain('title');
     });
   });
 });

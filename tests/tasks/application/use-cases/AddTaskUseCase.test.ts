@@ -17,7 +17,7 @@ describe('AddTaskUseCase', () => {
     const tasks = repository.getTasks();
     expect(tasks).toHaveLength(1);
     expect(tasks[0].title).toBe(title);
-    expect(tasks[0].status).toBe(TaskStatus.PENDING);
+    expect(tasks[0].status).toBe(TaskStatus.TODO);
     expect(tasks[0]).toHaveProperty('id');
     expect(tasks[0]).toHaveProperty('createdAt');
     expect(tasks[0]).toHaveProperty('updatedAt');

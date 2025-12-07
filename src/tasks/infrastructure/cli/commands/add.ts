@@ -9,8 +9,8 @@ export const addCommand = (repository: ITaskRepository) => {
     .argument('<task>', 'the task to add')
     .action(async (task) => {
       try {
-        await AddTaskUseCase(repository, task);
-        console.log(`Task "${task}" added successfully`);
+        const createdTask = await AddTaskUseCase(repository, task);
+        console.log(`Task added successfully (ID: ${createdTask.id})`);
       } catch (error) {
         throw error
       }
