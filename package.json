@@ -1,0 +1,26 @@
+{
+  "name": "task-tracker",
+  "version": "1.0.0",
+  "description": "Task Tracker Backend",
+  "main": "dist/App.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node-dev --respawn --transpile-only src/App.ts",
+    "start": "node dist/App.js",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/mongoose": "^5.11.96",
+    "@types/node": "^20.10.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "commander": "^14.0.2",
+    "dotenv": "^17.2.3",
+    "mongoose": "^9.0.1"
+  }
+}
